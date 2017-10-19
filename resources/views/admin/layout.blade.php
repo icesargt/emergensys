@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Hospital IASA | www.hospitaliasa.dev</title>
+  <title>Sistema de Pagos | www.paymentclick.dev</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -64,9 +64,9 @@ desired effect
     <!-- Logo -->
     <a href="/dashboard" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>HIA</b>S</span>
+      <span class="logo-mini"><b>P</b>SA</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>HIA</b>SA</span>
+      <span class="logo-lg"><b>PLANILLA</b>SA</span>
     </a>
 
     <!-- Header Navbar -->
@@ -314,7 +314,7 @@ desired effect
       <div class="col-lg-12">
         <div class="box">
           <div class="box-header with-border">
-            <h1 class="box-title">Sistema Experto</h1>
+            <h1 class="box-title">Sistema de Planillas</h1>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
               <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
