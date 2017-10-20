@@ -24,31 +24,31 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Route, para grupo de rutas de Igss -> IgssController
-Route::group(['middleware' => ['auth'] ], function(){
-	Route::resource('igss-management', 'IggsController');
+Route::group([ 'middleware' => 'auth', 'prefix' => 'igss' ], function(){
+	Route::resource('cuotas', 'IgssController');
 });
 
 // Route, para grupo de rutas de Salario -> SalaryController
-Route::group(['middleware' => ['auth'] ], function(){
-	Route::resource('salary-management', 'SalaryController');
+Route::group(['middleware' => 'auth', 'prefix' => 'pago' ], function(){
+	Route::resource('salarios', 'SalaryController');
 });
 
 // Route, para grupo de rutas de Empleados -> EmployeeController
-Route::group(['middleware' => ['auth'] ], function(){
-	Route::resource('employee-management', 'EmployeeController');
+Route::group(['middleware' => 'auth', 'prefix' => 'info' ], function(){
+	Route::resource('empleados', 'EmployeeController');
 });
 
 // Route, para grupo de rutas Historial -> RecordController
-Route::group(['middleware' => ['auth'] ], function(){
-	Route::resource('record-management', 'RecordController');
+Route::group(['middleware' => 'auth', 'prefix' => 'dato' ], function(){
+	Route::resource('historial', 'RecordController');
 });
 
 // Route, para grupo de rutas de Planilla -> PayrollControler
-Route::group(['middleware' => ['auth'] ], function(){
-	Route::resource('payroll-management', 'PayrollControler');
+Route::group(['middleware' => 'auth', 'prefix' => 'control' ], function(){
+	Route::resource('planillas', 'PayrollControler');
 });
 
 // Route, para grupo de rutas de Detalles de planilla -> PayrollDetailController
-Route::group(['middleware' => ['auth'] ], function(){
-	Route::resource('payroll-details', 'PayrollDetailController');
+Route::group([ 'middleware' => 'auth', 'prefix' => 'registro' ], function(){
+	Route::resource('detalle', 'PayrollDetailController');
 });

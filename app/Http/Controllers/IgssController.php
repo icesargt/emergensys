@@ -12,9 +12,16 @@ class IgssController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $igss_quota = Igss::where('status',1)
+            ->paginate(10)
+            ->orderBy('year', 'ASC');
+
+        return view('backend.igss.index', [
+                'igss_quota' => $igss_quota,
+            ]);
+
     }
 
     /**
@@ -24,7 +31,7 @@ class IgssController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.igss.create');
     }
 
     /**
@@ -44,20 +51,27 @@ class IgssController extends Controller
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response
      */
-    public function show(Igss $igss)
+    public function show($id)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * Editar un registro existente de cuota Igss, 
+     * recibe como parametro el id del registro.
+     * Busca y retorna una vista con los datos encontrados.
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response
      */
-    public function edit(Igss $igss)
+    public function edit($id)
     {
-        //
+
+        $igss_edit = Igss::findOrFail($id);
+
+        return view('backend.igss.edit', [
+                'igss_edit' => $igss_edit,
+            ]);        
     }
 
     /**
@@ -67,7 +81,7 @@ class IgssController extends Controller
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Igss $igss)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -78,8 +92,13 @@ class IgssController extends Controller
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Igss $igss)
+    public function destroy($id)
     {
-        //
+        $igss_delete = Igss::findOrFail($id);
+
+        $igss_delete->status = 0;
+        $igss_delete->save();
+
+        return redirect()->route('igss-management.index')->with('success','La cuota Igss: '. $igss_delete->quota . ' , ha sido dado de baja!');
     }
 }
