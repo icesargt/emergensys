@@ -19,10 +19,6 @@ class CreateSalariesTable extends Migration
             $table->decimal('ordinary_salary',12,2);
             $table->char('status',1)->default(1); // 1 = exist / 0 = deleted
             $table->timestamps();
-
-
-
-            $table->timestamps();
         });
     }
 
