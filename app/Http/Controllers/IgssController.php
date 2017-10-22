@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Igss;
+use Toastr;
 use Illuminate\Http\Request;
 
 class IgssController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista los registros existentes en base de datos.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $igss_quota = Igss::where('status',1)
             ->paginate(10)
@@ -25,7 +26,7 @@ class IgssController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra vista para crear cuota.
      *
      * @return \Illuminate\Http\Response
      */
@@ -42,11 +43,34 @@ class IgssController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        
+        /**
+         * Reglas de validacion de datos y validación.
+         */
+        $validator = Validator::make( $request->all(), [
+            'periodo' => 'required|numeric|min:4|max:4',
+            'cuota' => 'required|numeric|between:0.00,99.99',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
+
+        // Nueva instancia.
+        $new_igss = new Igss;
+
+        $new_igss->year = $request->periodo;
+        $new_igss->quota = $request->cuota;
+        $new_igss->save();
+
+
+
+        return redirect()->route('cuotas.index')->with('success', 'Nueva cuota Igss agregada.');
     }
 
     /**
-     * Display the specified resource.
+     * Muestra vista con registro individual.
      *
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response
@@ -57,7 +81,7 @@ class IgssController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 
      * Editar un registro existente de cuota Igss, 
      * recibe como parametro el id del registro.
      * Busca y retorna una vista con los datos encontrados.
@@ -75,10 +99,10 @@ class IgssController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza datos recibidos desde frontend
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Igss  $igss
+     * @param  \App\Igss  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -87,7 +111,7 @@ class IgssController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un registro.
      *
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response

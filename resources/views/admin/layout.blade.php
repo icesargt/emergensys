@@ -28,6 +28,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <link rel="stylesheet" href="{{asset('/admin/css/skin-blue.min.css')}}">
 
+  <!-- Css para validator -->
+  <link rel="stylesheet" href="{{asset('/validator/Parsley/parsley.css')}}">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -467,6 +470,11 @@ desired effect
 <script src="{{asset('/admin/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('/admin/js/app.min.js')}}"></script>
+
+<!-- Validator -->
+<script src="{{asset('/validator/Parsley/js/parsley.min.js')}}"></script>
+<script src="{{asset('/validator/Parsley/i18n/es.js')}}"></script>
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

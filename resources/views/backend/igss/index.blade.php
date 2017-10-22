@@ -5,7 +5,7 @@
 	<div class="col-lg-12">
 		<div class="container">
 			<div class="col-md-12">
-				
+				@include('igss._search_igss')
 			</div>
 		</div>
 		<!-- Tabla responsiva-->
@@ -21,7 +21,19 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				  	@foreach($igss_quota as $igss)
+
+			  	@forelse($igss_quota as $igss)
+			  		<tr>
+					      <th>{{ $igss->id_igss }}</th>
+					      <td>{{ $igss->year }}</td>
+					      <td>{{ $igss->quota }}</td>
+					      <td>{{ $igss->created_at }}</td>
+					      <td>Actions</td>
+					</tr>
+			  	@empty
+			  		<p>No hay resultados.</p>
+			  	@endforelse
+				  	{{-- @foreach($igss_quota as $igss)
 					    <tr>
 					      <th>{{ $igss->id_igss }}</th>
 					      <td>{{ $igss->year }}</td>
@@ -29,10 +41,10 @@
 					      <td>{{ $igss->created_at }}</td>
 					      <td>Actions</td>
 					    </tr>
-				    @endforeach	    
+				    @endforeach --}}
 				  </tbody>
 			</table>
-			{{ $igss_cuota->appends($$igss->year)->render()}}
+			{{ $igss_cuota->appends($igss->quota)->render()}}
 		</div>
 	</div>
 </div>
