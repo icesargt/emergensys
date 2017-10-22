@@ -17,7 +17,8 @@ class IgssController extends Controller
     {
         $igss_quota = Igss::where('status',1)
             ->paginate(10)
-            ->orderBy('year', 'ASC');
+            ->orderBy('year', 'ASC')
+            ->get();
 
         return view('backend.igss.index', [
                 'igss_quota' => $igss_quota,
