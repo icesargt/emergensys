@@ -15,10 +15,10 @@ class IgssController extends Controller
      */
     public function index()
     {
-        $igss_quota = Igss::all()->where('status',1)
-            ->paginate(10)
+        $igss_quota = Igss::all()->where('status',1)            
             ->orderBy('year', 'ASC')
-            ->get();
+            ->paginate(10);
+            
 
             dd($igss_quota);
 
