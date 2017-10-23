@@ -5,7 +5,7 @@
 	<div class="col-lg-12">			
 		<h3>Lista de cuotas Igss</h3>							
 		<div class="col-lg-6">
-			@include('backend.igss._search_igss')				
+			@include('backend.salary._search_salary')				
 		</div>
 
 		<div class="col-lg-6">

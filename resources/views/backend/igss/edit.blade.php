@@ -21,7 +21,7 @@
 	<div class="col-lg-12">
 		<div class="center-block" style="width:50%;">
 				
-			<form data-parsley-validate="" class="form-horizontal" action="{{ route ('cuotas.update',$igss_edit->id_igss) }}" method="POST" autocomplete="off">
+			<form data-parsley-validate class="form-horizontal" action="{{ route ('cuotas.update',$igss_edit->id_igss) }}" method="POST" autocomplete="off">
 			<input name="_method" type="hidden" value="PATCH">
     		{{csrf_field()}}
 				
@@ -32,7 +32,7 @@
 				{{-- Rango de años 2016 al 2018 y aumenta en 1--}}
 				<div class="form-group {{ $errors-> has('periodo') ? 'has-error' : '' }} ">
 					<label for="año">Año *:</label>
-					<select name="periodo" id="periodo" class="form-control">
+					<select name="periodo" id="periodo" class="form-control" required="required">
 						<option value="">--año--</option>
 						@php
 							for ($anio=(date('Y')+1); 2016 <= $anio; $anio--) {
@@ -50,7 +50,7 @@
 				{{--Cuota--}}
 				<div class="form-group {{ $errors->has('cuota') ? 'has-error' : '' }}">
 					<label for="cuota">Cuota Igss:</label>
-					<input type="number" step="0.01" min="1.00" id="cuota" class="form-control" name="cuota" placeholder="4.83" value="{{ $igss_edit->quota }}">
+					<input type="number" step="0.01" min="1.00" id="cuota" class="form-control" name="cuota" placeholder="4.83" value="{{ $igss_edit->quota }}" required="required">
 					<span class="text-danger">{{ $errors->first('cuota') }}</span>
 				</div>
 				

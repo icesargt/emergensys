@@ -40,7 +40,8 @@ class IgssController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Valida datos y crea un registro nuevo de cuota Igss.
+     * Campos: year, cuota.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -123,7 +124,7 @@ class IgssController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
 
-        // Nueva instancia.
+        // Consulta modelo.
         $edit_igss = Igss::findOrFail($id);
 
         $edit_igss->year = $request->periodo;

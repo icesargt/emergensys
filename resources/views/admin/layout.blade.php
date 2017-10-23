@@ -284,7 +284,7 @@ desired effect
         </li>
 
         <!-- Salarios link-->
-        <li class="{{Request::path() == 'pago/salarios' ? 'active' : '' }}">
+        <li class="{{ Request::is('pago*') ? 'active' : '' }}">
           <a href="{{route('salarios.index')}}"><i class="fa fa-link"></i> <span>Salario Anual</span></a>
         </li>
 

@@ -18,5 +18,14 @@ class Salary extends Model
     public function payroll_detail()
     {
     	return $this->hasMany('PayrollDetail');
-    }  
+    }
+
+    // Scope salario, para formulario de busqueda
+    public function scopeSalarios($query, $salario)
+    {
+        if (trim($salario) != "") {
+            $query->where('ordinary_salary', "LIKE", "%$salario%");
+        }
+    }
+
 }
