@@ -1,12 +1,9 @@
 
 
-{!! Form::open([ 'class' => 'form-horizontal', 'role' => 'search', 'method' => 'GET', 'url' => 'cuotas', 'autocomplete' => 'off' ]) !!}
-	{{ Form::label('buscar','Buscar:') }}
-	{{ Form::text('buscar','null', array('class' => 'form-control', 'required' => '') }}
-
-	{{ Form::submit('Buscar', array('class' => 'btn btn-success btn-md btn-block') }}
-	{{ Form::reset('Limpiar', array('class' => 'btn btn-success btn-md btn-block') }}
+{!! Form::open([ 'route' => 'cuotas.index', 'method' => 'GET', 'class' => 'navbar-form navbar-left', 'role' => 'search', 'autocomplete' => 'off' ]) !!}
+	<div class="form-group">
+  		{{ Form::text('cuota', null, ['class' => 'form-control','size' => '30','placeholder' => 'Buscar' ]) }}    
+  	</div>
+  	<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+  	<a href="{{route('cuotas.index')}}" class="btn btn-info"><i class="fa fa-times" aria-hidden="true"></i></span> Limpiar</a>
 {{ Form::close() }}
-
-
-	

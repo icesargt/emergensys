@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Igss;
-use Toastr;
+use Validator;
+use Alert;
 use Illuminate\Http\Request;
 
 class IgssController extends Controller
@@ -13,19 +14,19 @@ class IgssController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $igss_quota = Igss::all()->where('status',1)            
-            ->sortBy('year', 'ASC')
+        //dd($request->get('cuota'));
+        $cuota_search = trim($request->get('cuota'));
+
+        $igss_quota = Igss::buscar($cuota_search)->where('status',1)
+            ->orderBy('year')
             ->paginate(10);
-            
 
-            dd($igss_quota);
-
-        return view('backend.igss.index', [
+        
+            return view('backend.igss.index', [
                 'igss_quota' => $igss_quota,
-            ]);
-
+            ]);    
     }
 
     /**
@@ -52,8 +53,8 @@ class IgssController extends Controller
          * Reglas de validacion de datos y validación.
          */
         $validator = Validator::make( $request->all(), [
-            'periodo' => 'required|numeric|min:4|max:4',
-            'cuota' => 'required|numeric|between:0.00,99.99',
+            'periodo' => 'required|digits_between:4,4|numeric',
+            'cuota' => 'required|numeric|between:4.00,99.99',
         ]);
 
         if ($validator->fails()) {
@@ -67,9 +68,9 @@ class IgssController extends Controller
         $new_igss->quota = $request->cuota;
         $new_igss->save();
 
+        alert()->success('Success Message', 'Optional Title')->autoclose(1500);
 
-
-        return redirect()->route('cuotas.index')->with('success', 'Nueva cuota Igss agregada.');
+        return redirect()->route('cuotas.index'); //->with('success', 'Nueva cuota Igss agregada.');
     }
 
     /**
@@ -110,7 +111,26 @@ class IgssController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        /**
+         * Reglas de validacion de datos y validación.
+         */
+        $validator = Validator::make( $request->all(), [
+            'periodo' => 'required|digits_between:4,4|numeric',
+            'cuota' => 'required|numeric|between:4.00,99.99',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors());
+        }
+
+        // Nueva instancia.
+        $edit_igss = Igss::findOrFail($id);
+
+        $edit_igss->year = $request->periodo;
+        $edit_igss->quota = $request->cuota;
+        $edit_igss->save();
+
+        return redirect()->route('cuotas.index')->with('success', 'Cuota Igss actualizada.');
     }
 
     /**
@@ -126,6 +146,10 @@ class IgssController extends Controller
         $igss_delete->status = 0;
         $igss_delete->save();
 
-        return redirect()->route('igss-management.index')->with('success','La cuota Igss: '. $igss_delete->quota . ' , ha sido dado de baja!');
+       
+        alert()->success("Good job!", "You clicked the button!", "success");
+
+    
+        return redirect()->route('cuotas.index');
     }
 }

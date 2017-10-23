@@ -18,5 +18,16 @@ class Igss extends Model
     public function payroll_detail()
     {
     	return $this->hasMany('PayrollDetail');
-    }    
+    }
+
+    // Query scope para busqueda en Igss controller. Metodo index
+    public function scopeBuscar($query, $cuota)
+    {   
+        if (trim($cuota) != "") 
+        {
+            $query->where('quota', "LIKE", "%$cuota%");
+        }
+        
+    }
+    
 }

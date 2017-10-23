@@ -29,7 +29,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('/admin/css/skin-blue.min.css')}}">
 
   <!-- Css para validator -->
-  <link rel="stylesheet" href="{{asset('/validator/Parsley/parsley.css')}}">
+  <link rel="stylesheet" href="{{asset('/validator/Parsley/css/parsley.css')}}">
+
+  <!-- sweet alert -->
+  <link rel="stylesheet" href="{{asset('/sweetalert/sweetalert.css')}}">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -274,19 +277,34 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header"><h5>MENÚ PRINCIPAL</h5></li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link 1</span></a></li>
+    
+        <!-- Igss link-->
+        <li class="{{ Request::is('igss*') ? 'active' : '' }}">        
+          <a href="{{route('cuotas.index')}}"><i class="fa fa-link"></i> <span>Cuotas IGSS</span></a>
+        </li>
+
+        <!-- Salarios link-->
+        <li class="{{Request::path() == 'pago/salarios' ? 'active' : '' }}">
+          <a href="{{route('salarios.index')}}"><i class="fa fa-link"></i> <span>Salario Anual</span></a>
+        </li>
+
         <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+        
+        <!-- multilevel -->
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
+
           <ul class="treeview-menu">
             <li><a href="#">Link in level 2</a></li>
             <li><a href="#">Link in level 2</a></li>
           </ul>
         </li>
+        <!-- fin multilevel -->
+
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -328,8 +346,7 @@ desired effect
           <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
-                        <!--Contenido-->
-                        <h3>Contenido</h3>
+                        <!--Contenido-->                        
                         @yield('content')
                         <!--Fin Contenido-->
                 </div>
@@ -358,7 +375,7 @@ desired effect
       <div class="row">
         <div class="col-md-12">
           <h3>Contenido</h3>
-          @yield('content')
+          
           
         </div>
       </div>
@@ -475,6 +492,34 @@ desired effect
 <script src="{{asset('/validator/Parsley/js/parsley.min.js')}}"></script>
 <script src="{{asset('/validator/Parsley/i18n/es.js')}}"></script>
 
+<!-- sweet alert -->
+<script src="{{asset('/sweetalert/sweetalert.min.js')}}"></script>
+@include('sweet::alert')
+{{-- <script src="{{asset('/js/toastr.min.js')}}"></script> --}}
+
+{{-- 
+<script>
+    @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}";
+        switch(type){
+            case 'info':
+                toastr.info("{{ Session::get('message') }}");
+                break;
+            
+            case 'warning':
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+            case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
+            case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
+        }
+    @endif
+</script>
+--}}
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
@@ -482,6 +527,7 @@ desired effect
      fixed layout. -->
 
 <!-- Scripts js personalizados -->
+
 @stack('scripts')
 </body>
 </html>

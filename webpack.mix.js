@@ -15,4 +15,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
 
 
-mix.copy('node_modules/sweetalert/dist/', 'public/sweetalert/');   
+mix.copy('node_modules/sweetalert/dist/', 'public/sweetalert/');
+
