@@ -288,22 +288,74 @@ desired effect
           <a href="{{route('salarios.index')}}"><i class="fa fa-link"></i> <span>Salario Anual</span></a>
         </li>
 
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-        
-        <!-- multilevel -->
+        <!-- Menu multilevel de Empleados  -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
+          <a href="#"><i class="fa fa-link"></i> <span>Gestión de Empleados</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
 
           <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
+
+          <!-- Empleados link-->
+            <li class="{{ Request::is('info*') ? 'active' : '' }}">        
+              <a href="{{route('empleados.index')}}"><i class="fa fa-link"></i> <span>Empleados</span></a>
+            </li>
+
+            <!-- Historial link-->
+            <li class="{{ Request::is('dato*') ? 'active' : '' }}">
+              <a href="{{route('historial.index')}}"><i class="fa fa-link"></i> <span>Historial</span></a>
+            </li>
+
+            {{-- <li><a href="#">Link in level 2</a></li>
+            <li><a href="#">Link in level 2</a></li> --}}
           </ul>
         </li>
         <!-- fin multilevel -->
+
+
+        <!-- Menu multilevel de Planillas-->
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Planillas</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+
+          <ul class="treeview-menu">
+            <li><a href="#">Generar Planilla</a></li>
+            <li><a href="#">Consultar Planilla</a></li>
+          </ul>
+        </li>
+        <!-- fin multilevel -->
+
+                
+        <!-- Menu multilevel de Reportes -->
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Reportes</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+
+          <ul class="treeview-menu">
+            <li><a href="#">Registro de Igss</a></li>
+            <li><a href="#">Registro de Salarios</a></li>
+
+            <li><a href="#">Registro de Empleados</a></li>
+            <li><a href="#">Historial de Empleados</a></li>
+
+            <li><a href="#">Planillas Generadas</a></li>
+            <li><a href="#">P</a></li>
+            
+
+          </ul>
+        </li>
+        <!-- fin multilevel -->
+
+        <!-- Link de form de contacto -->
+        <li><a href="#"><i class="fa fa-link"></i> <span>Contacto</span></a></li>
 
       </ul>
       <!-- /.sidebar-menu -->
