@@ -35,6 +35,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'pago' ], function(){
 
 // Route, para grupo de rutas de Empleados -> EmployeeController
 Route::group(['middleware' => 'auth', 'prefix' => 'info' ], function(){
+
+	// Route::post('history', ['as' => 'newrecord', 'uses' => 'EmployeeController@setNewRecord']);
+
+	Route::post('empleados/{id}/history', ['as' => 'newrecord', 'uses' => 'EmployeeController@setNewRecord']);
+
+
+
 	Route::resource('empleados', 'EmployeeController');
 });
 

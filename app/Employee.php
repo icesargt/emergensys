@@ -23,11 +23,18 @@ class Employee extends Model
     }
 
     // Relation 1..n Employee - Records
-    public function record()
+    public function records()
     {
     	return $this->hasMany('Record');
     }
 
-
+    // Scope Empleados, para buscar empleado
+    public function scopeEmpleados($query, $nombre)
+    {
+        if (trim($nombre) != "") {
+            // $query->where('name','LIKE',"%$nombre%");
+            $query->where(\DB::raw("CONCAT(name, ' ', last_name)"), "LIKE", "%$nombre%");
+        }
+    }
 
 } // end class

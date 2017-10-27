@@ -16,9 +16,9 @@ class CreateRecordsTable extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->increments('id_record');
             $table->integer('employee_id');
-            $table->decimal('bonus',5,2)->nullable();
+            $table->decimal('bonus',10,2)->nullable();
             $table->date('bonus_date')->nullable();
-            $table->decimal('isr',5,2)->nullable();
+            $table->decimal('isr',10,2)->nullable();
             $table->date('isr_date')->nullable();
             $table->timestamps();
         });
