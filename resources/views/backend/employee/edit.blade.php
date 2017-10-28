@@ -25,6 +25,7 @@
 			<div class="center-block" style="width: 70%">
 				<form data-parsley-validate action="{{ route('empleados.update', $employee_edit->id_employee) }}" class="form-horizontal" method="POST" autocomplete="off">
 					<input name="_method" type="hidden" value="PATCH">
+					<input name="emp_id" id="emp_id" type="hidden" value="{{$employee_edit->id_employee}}">
     				{{csrf_field()}}
 
 				<!-- Sección: Datos personales. -->
@@ -134,7 +135,7 @@
 								<div class="form-group {{ $errors->has('bonificacion') ? 'has-error' : '' }}">
 									<label for="bonificacion" class="control-label col-sm-4">Bonificación *: </label>
 									<div class="col-sm-8">
-										<input type="number" class="form-control" min="250.00" max="5000.00" step="25.00" name="bonificacion" id="bonificacion" placeholder="250.00" value="{{ $employee_edit->bonus }}" required="required">
+										<input type="number" class="form-control" min="250.00" max="5000.00" step="any" name="bonificacion" id="bonificacion" placeholder="250.00" value="{{ $employee_edit->bonus }}" required="required">
 										<span class="text-danger">{{ $errors->first('bonificacion') }}</span>
 									</div>
 								</div>
@@ -143,7 +144,7 @@
 								<div class="form-group {{ $errors->has('isr') ? 'has-error' : '' }}">
 									<label for="isr" class="control-label col-sm-4">Retención de ISR *: </label>
 									<div class="col-sm-8">
-										<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr" id="isr" placeholder="150.00" value="{{ $employee_edit->isr }}" required="required">
+										<input type="number" class="form-control" min="10.00" max="1000.00" step="any" name="isr" id="isr" placeholder="150.00" value="{{ $employee_edit->isr }}" required="required">
 										<span class="text-danger">{{ $errors->first('isr') }}</span>
 									</div>
 								</div>
@@ -154,11 +155,7 @@
 										<button id="btnViewHistory" class="btn btn-warning" type="button" data-toggle="collapse" data-target="#viewHistory" aria-expanded="false" aria-controls="viewHistory">
 											<span class="glyphicon glyphicon-book" aria-hidden="true"></span> Ver Historial
 										</button>
-
-										{{--<button type="button" class="btn btn-primary btn-sm pull-left" value="{{$employee_edit->id_employee}}">--}}
-											{{--<span class="glyphicon glyphicon-save" aria-hidden="true"></span> Ver Historial--}}
-										{{--</button>--}}
-
+										
 										<button type="submit" class="btn btn-success btn-sm pull-right" value="validate">
 											<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Actualizar
 										</button>
@@ -171,15 +168,18 @@
 							<div class="collapse" id="viewHistory">
 								<div class="well">
 									<div class="table-responsive">
-										<div class="col-lg-2">
+
+									<div class="notificar"><!-- Notificar de errores al actualizar algun Historial-->
+									</div>
+										<div class="col-md-3">
 											@if($records->total()>0)
-												<h4>Hay <span class="badge label label-primary">{{ $records->total() }}</span> registros.</h4>
+												<h5>Hay <span class="badge label label-primary">{{ $records->total() }}</span> registros.</h5>
 											@else
-												<h4>Hay <span class="badge label label-default">{{ $records->total() }}</span> registros.</h4>
+												<h5>Hay <span class="badge label label-default">{{ $records->total() }}</span> registros.</h5>
 											@endif
 
-										</div>
-										<table class="table table-bordered table-hover table-striped table-condensed" style="background-color: rgba(75, 100, 111,0.10);">
+										</div>										
+										<table class="table table-bordered table-hover table-striped table-condensed history" style="background-color: rgba(75, 100, 111,0.10);">
 											<thead style="background-color: rgba(75, 100, 111, 1); color: #FFF;">
 												<tr>
 													<th>#</th>
@@ -191,34 +191,34 @@
 												</tr>
 											</thead>
 											<tbody>
-												<form class="" action="{{route('historial.store' )}}" method="post">
-													<input type="hidden" name="_token" value="{{ csrf_token() }}">
-													@foreach($records as $record)
-														<tr>
-															<td>
-																{{ $record->id_record }}
-															</td>
-															<td>
-																<input type="number" class="form-control" min="250.00" max="5000.00" step="25.00" name="bono[]" placeholder="250.00" value="{{ $record->bonus }}" required="required">
+												
+												
+												@foreach($records as $record)
+													<tr>
+														<td>
+															{{ $record->id_record }}
+														</td>
+														<td>
+															<input type="number" class="form-control" min="250.00" max="5000.00" step="0.01" name="bono[]" placeholder="250.00" value="{{ $record->bonus }}" required="">
 
-															</td>
-															<td>
-																{{ $record->bonus_date }}
-															</td>
-															<td>
-																<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr[]" placeholder="250.00" value="{{ $record->isr }}" required="required">
-															</td>
-															<td>
-																{{ $record->isr_date }}
-															</td>
-															<td>
-																<button type="submit" class="btn btn-danger btn-sm"  onclick="return confirm('¿Esta seguro de eliminar este registro');" name="update">
-																	<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Actualizar
-																</button>
-															</td>
-														</tr>
-													@endforeach
-												</form>
+														</td>
+														<td>
+															{{ date('d/m/Y', strtotime($record->bonus_date)) }}
+														</td>
+														<td>
+															<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr[]" placeholder="250.00" value="{{ $record->isr }}" required="">
+														</td>
+														<td>
+															{{ date('d/m/Y', strtotime($record->isr_date)) }}
+														</td>
+														<td>
+															<button type="button" class="btn btn-info btn-sm" name="update">
+																<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Actualizar
+															</button>
+														</td>
+													</tr>
+												@endforeach
+												
 											</tbody>
 										</table>
 										<hr>
@@ -231,76 +231,16 @@
 				</div><!-- /panel Bono e ISR -->
 			</div><!-- /center-block -->
 		</div><!-- /col-lg-12 -->
-
-
-
-{{--
-		<!-- Editar historial -->
-		<div class="col-lg-12"> <!-- style="border: 1px solid #333333;" -->
-		<div class="table-responsive">
-		<div class="col-lg-2">
-			@if($records->total()>0)
-				<h4>Hay <span class="badge label label-primary">{{ $records->total() }}</span> registros.</h4>
-			@else
-				<h4>Hay <span class="badge label label-default">{{ $records->total() }}</span> registros.</h4>
-			@endif
-			
-		</div>			
-			<table class="table table-bordered table-hover table-striped table-condensed" style="background-color: rgba(75, 100, 111,0.10);">
-	  			<thead style="background-color: rgba(75, 100, 111, 1); color: #FFF;">
-				    <tr>
-				      <th>#</th>
-				      <th>Bonificación</th>
-				      <th>Fecha de alta</th>
-				      <th>Retención ISR</th>
-				      <th>Fecha de alta</th>
-				      <th>Acciones</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				  	<form class="" action="{{route('historial.store' )}}" method="post">
-				  		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					  	@foreach($records as $record)
-					  		<tr>
-							    <td>
-							    	{{ $record->id_record }}
-							    </td>							      
-							    <td>
-							    	<input type="number" class="form-control" min="250.00" max="5000.00" step="25.00" name="bono[]" placeholder="250.00" value="{{ $record->bonus }}" required="required">
-							    	
-							    </td>
-							    <td>
-							    	{{ $record->bonus_date }}
-							    </td>
-							    <td>
-							    	<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr[]" placeholder="250.00" value="{{ $record->isr }}" required="required">							    	
-							    </td>
-							    <td>
-							    	{{ $record->isr_date }}
-							    </td>
-							    <td>
-		                            <button type="submit" class="btn btn-danger btn-sm"  onclick="return confirm('¿Esta seguro de eliminar este registro');" name="update">
-		                            	<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Actualizar
-		                            </button>
-						      	</td>
-							</tr>					  	
-					  	@endforeach
-					</form>
-				  </tbody>
-			< /tabs
-			<hr >
-			{{ $records->render() }}
-		</div>
-	</div>
-
-	--}}
-
-
 	</div> <!-- /container fluid-->
 
 	@push('scripts')
         <script src="{{asset('/admin/datepicker/js/bootstrap-datepicker.min.js')}}"></script>
         <script src="{{asset('/admin/datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
         <script src="{{asset('/admin/js/date_edit.js')}}"></script>
+
+        <script src="{{asset('/admin/js/history.js')}}"></script>
+
+        history
+
     @endpush
 @stop

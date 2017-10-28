@@ -60,7 +60,7 @@ class EmployeeController extends Controller
                 'apellido' => 'required|max:50',
                 'fecha' => 'required|date_format:d/m/Y',
                 'bonificacion' => 'required|numeric|between:250.00,10000.00',
-                'isr' => 'required|numeric|between:10.00,10000.00',
+                'isr' => 'required|numeric|between:10.00,10000.00',              
         ]);
 
         if ($v->fails()) 
@@ -77,8 +77,8 @@ class EmployeeController extends Controller
         $new_employee->name = $request->get('nombre');
         $new_employee->last_name = $request->get('apellido');
         $new_employee->start_date = $insert_date_start;
-        $new_employee->bonus = intval($request->get('bonificacion'));
-        $new_employee->isr = intval($request->get('isr'));
+        $new_employee->bonus = $request->get('bonificacion');
+        $new_employee->isr = $request->get('isr');
 
         $new_employee->save();
 
@@ -95,9 +95,9 @@ class EmployeeController extends Controller
 
         $new_record = new Record;        
         $new_record->employee_id = $new_employee->id_employee;
-        $new_record->bonus = intval($request->get('bonificacion'));
+        $new_record->bonus = $request->get('bonificacion');
         $new_record->bonus_date = $date_save;
-        $new_record->isr = intval($request->get('isr'));
+        $new_record->isr = $request->get('isr');
         $new_record->isr_date = $date_save;
 
         $new_record->save();
@@ -246,8 +246,8 @@ class EmployeeController extends Controller
          */
 
         $edit_bonus = Employee::findOrFail($id);        
-        $edit_bonus->bonus = intval($request->get('bonificacion'));
-        $edit_bonus->isr = intval($request->get('isr'));
+        $edit_bonus->bonus = $request->get('bonificacion');
+        $edit_bonus->isr = $request->get('isr');
         $edit_bonus->save();
         
         // Nueva instancia de Carbon, para transformar
@@ -257,9 +257,9 @@ class EmployeeController extends Controller
 
         $new_record = new Record;        
         $new_record->employee_id = intval($id);
-        $new_record->bonus = intval($request->get('bonificacion'));
+        $new_record->bonus = $request->get('bonificacion');
         $new_record->bonus_date = $date_save;
-        $new_record->isr = intval($request->get('isr'));
+        $new_record->isr = $request->get('isr');
         $new_record->isr_date = $date_save;
 
         $new_record->save();

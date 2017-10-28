@@ -81,7 +81,7 @@
 							<div class="form-group {{ $errors->has('bonificacion') ? 'has-error' : '' }}">
 								<label for="bonificacion" class="control-label col-sm-4">Bonificación *: </label>
 								<div class="col-sm-8">
-									<input type="number" class="form-control" min="250.00" max="10000.00" step="25.00" name="bonificacion" id="bonificacion" placeholder="250.00" value="{{old('bonificacion') }}" required="required">
+									<input type="number" class="form-control" min="250.00" max="10000.00" step="any" name="bonificacion" id="bonificacion" placeholder="250.00" value="{{old('bonificacion') }}" required="required">
 								</div>
 								<span class="text-danger">{{ $errors->first('bonificacion') }}</span>
 							</div>
@@ -89,7 +89,7 @@
 							<div class="form-group {{ $errors->has('isr') ? 'has-error' : '' }}">
 								<label for="isr" class="control-label col-sm-4">Retención de ISR *: </label>
 								<div class="col-sm-8">
-									<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr" id="isr" placeholder="162.50" value="{{old('isr') }}" required="required">
+									<input type="number" class="form-control" min="10.00" max="10000.00" step="any" name="isr" id="isr" placeholder="min 10.00 max 10000.00" value="{{old('isr') }}" required="required">
 								</div>
 								<span class="text-danger">{{ $errors->first('isr') }}</span>
 							</div>

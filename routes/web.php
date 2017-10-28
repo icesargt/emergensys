@@ -34,19 +34,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'pago' ], function(){
 });
 
 // Route, para grupo de rutas de Empleados -> EmployeeController
-Route::group(['middleware' => 'auth', 'prefix' => 'info' ], function(){
-
-	// Route::post('history', ['as' => 'newrecord', 'uses' => 'EmployeeController@setNewRecord']);
-
+Route::group(['middleware' => 'auth', 'prefix' => 'info' ], function(){	
 	Route::post('empleados/{id}/history', ['as' => 'newrecord', 'uses' => 'EmployeeController@setNewRecord']);
-
-
-
 	Route::resource('empleados', 'EmployeeController');
 });
 
 // Route, para grupo de rutas Historial -> RecordController
 Route::group(['middleware' => 'auth', 'prefix' => 'dato' ], function(){
+	
+	Route::post('historial/record', ['as' => 'updaterecord', 'uses' => 'RecordController@setUpdateRecord']);
 	Route::resource('historial', 'RecordController');
 });
 
@@ -58,4 +54,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'control' ], function(){
 // Route, para grupo de rutas de Detalles de planilla -> PayrollDetailController
 Route::group([ 'middleware' => 'auth', 'prefix' => 'registro' ], function(){
 	Route::resource('detalle', 'PayrollDetailController');
+});
+
+Route::get('error', function(){
+	return view('errors.404');
 });
