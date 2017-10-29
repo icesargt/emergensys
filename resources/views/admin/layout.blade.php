@@ -324,6 +324,10 @@ desired effect
           </a>
 
           <ul class="treeview-menu">
+            <li class="{{ Request::is('control*') ? 'active' : '' }}">        
+              <a href="{{route('planillas.index')}}"><i class="fa fa-link"></i> <span>Generar Planilla</span></a>
+            </li>
+
             <li><a href="#">Generar Planilla</a></li>
             <li><a href="#">Consultar Planilla</a></li>
           </ul>

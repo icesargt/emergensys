@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', function(){
-	return view('admin.dashboard');
+	return view('admin.dashboard')->name('dashboard');
 });
 
 Auth::routes();
@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dato' ], function(){
 
 // Route, para grupo de rutas de Planilla -> PayrollControler
 Route::group(['middleware' => 'auth', 'prefix' => 'control' ], function(){
-	Route::resource('planillas', 'PayrollControler');
+	Route::resource('planillas', 'PayrollController');
 });
 
 // Route, para grupo de rutas de Detalles de planilla -> PayrollDetailController
@@ -57,5 +57,5 @@ Route::group([ 'middleware' => 'auth', 'prefix' => 'registro' ], function(){
 });
 
 Route::get('error', function(){
-	return view('errors.404');
+	return view('errors.404')->name('error');
 });

@@ -27,8 +27,7 @@
 				<h4>Hay <span class="badge label label-primary">{{ $igss_quota->total() }}</span> cuotas.</h4>
 			@else
 				<h4>Hay <span class="badge label label-default">{{ $igss_quota->total() }}</span> cuotas.</h4>
-			@endif
-			
+			@endif			
 		</div>			
 			<table class="table table-bordered table-hover table-striped table-condensed" style="background-color: rgba(75, 100, 111,0.10);">
 	  			<thead style="background-color: rgba(75, 100, 111, 1); color: #FFF;">

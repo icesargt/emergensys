@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Payroll;
+
 use Illuminate\Http\Request;
+use App\Payroll;
+use App\PayrollDetail;
+use App\Employee;
+use App\Igss;
+use App\Record;
+use App\Salary;
+use App\User;
+use Validator;
+use Alert;
 
 class PayrollController extends Controller
 {
@@ -12,9 +21,88 @@ class PayrollController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
+            $months = array(
+                '1' => 'Enero',
+                '2' => 'Febrero',
+                '3' => 'Marzo',
+                '4' => 'Abril',
+                '5' => 'Mayo',
+                '6' => 'Junio',
+                '7' => 'Julio',
+                '8' => 'Agosto',
+                '9' => 'Septiembre',
+                '10' => 'Octubre',
+                '11' => 'Noviembre',
+                '12' => 'Diciembre',
+            );
+        
+
+        if ($request) {
+            
+            // Recibir valores desde formulario.
+            $search_month = $request->get('mes');
+            $search_year = $request->get('year');
+
+            //dd($search_month, $search_year);
+
+            /**
+             * Verificar si existe un registro de planilla para el mes y año buscado.
+             */
+            $exist_payroll = Payroll::where('year', $search_year)
+                                        ->where('month', $search_month)
+                                        ->paginate(50);
+
+            //dd($exist_payroll);
+
+            // if ($exist_payroll->total() > 0) {
+            //     return $exist_payroll;
+            // }
+
+            /**
+             * Cargar datos de empleados, con estatus activo hasta el mes solicitado.
+             */
+            $employees_list = Employee::where('status','<>',2)
+                                        ->paginate(50);
+
+            
+
+            /**
+             * Cargar cuota de Igss actual.
+             */
+            $igss_list = Igss::where('year',$search_year)
+                            ->where('status',1)
+                            ->first();
+
+                    //dd($igss_list);
+            /**
+             * Cargar salario anual al año solicitado.
+             */
+            $salarys_list = Salary::where('year', $search_year)
+                                ->where('status',1)
+                                ->first();
+
+                                
+                                //dd($salarys_list);
+            
+            
+            //dd($months);
+            
+            return view('backend.payroll.index', [
+                    'months' => $months,
+                    'exist_payroll' => $exist_payroll,
+                    'employees_list' => $employees_list,
+                    'igss_list' => $igss_list,
+                    'salarys_list' => $salarys_list,
+                ]);
+
+            
+
+
+
+        }
     }
 
     /**
