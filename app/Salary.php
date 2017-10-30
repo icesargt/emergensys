@@ -24,7 +24,8 @@ class Salary extends Model
     public function scopeSalarios($query, $salario)
     {
         if (trim($salario) != "") {
-            $query->where('ordinary_salary', "LIKE", "%$salario%");
+            $query->where('ordinary_salary', "LIKE", "%$salario%")
+                  ->orWhere('year', "LIKE", "%$salario%");
         }
     }
 

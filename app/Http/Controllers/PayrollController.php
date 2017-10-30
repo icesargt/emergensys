@@ -23,7 +23,6 @@ class PayrollController extends Controller
      */
     public function index(Request $request)
     {
-        
             $months = array(
                 '1' => 'Enero',
                 '2' => 'Febrero',
@@ -39,15 +38,22 @@ class PayrollController extends Controller
                 '12' => 'Diciembre',
             );
         
+        if (($request->get('mes') == null) && ($request->get('year') == null) ) 
+        {
+            $paystatus = false;
+            
+            return view('backend.payroll.index',[
+                    'months' => $months,                    
+                    'paystatus' => $paystatus
+                ]);
+        }
 
         if ($request) {
-            
+            $paystatus = true;
             // Recibir valores desde formulario.
             $search_month = $request->get('mes');
             $search_year = $request->get('year');
-
-            //dd($search_month, $search_year);
-
+        
             /**
              * Verificar si existe un registro de planilla para el mes y año buscado.
              */
@@ -84,24 +90,14 @@ class PayrollController extends Controller
                                 ->where('status',1)
                                 ->first();
 
-                                
-                                //dd($salarys_list);
-            
-            
-            //dd($months);
-            
             return view('backend.payroll.index', [
                     'months' => $months,
                     'exist_payroll' => $exist_payroll,
                     'employees_list' => $employees_list,
                     'igss_list' => $igss_list,
                     'salarys_list' => $salarys_list,
+                    'paystatus' => $paystatus
                 ]);
-
-            
-
-
-
         }
     }
 
@@ -169,5 +165,14 @@ class PayrollController extends Controller
     public function destroy(Payroll $payroll)
     {
         //
+    }
+
+    /**
+     * Consultar planilla, según año y mes elegido.
+     */
+    
+    public function getPayrollDetailsExist()
+    {
+
     }
 }

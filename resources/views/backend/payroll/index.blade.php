@@ -7,14 +7,38 @@
 				@include('backend.payroll._search')
 			</div>
 			<div class="col-lg-5"{{--  style="border: 1px solid #333333;" --}}>
-				<a href="{{route('planillas.index')}}" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Consultar</a>
+				{{-- <a href="{{route('planillas.index')}}" class="btn btn-success btn-lg pull-right"><span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Consultar</a> --}}
 			</div>
 		</div>
 
 		<div class="col-lg-12">
 			<hr>
 		</div>
+		
+		@if($paystatus == false)
+			<div class="col-lg-12">
+				<div class="alert alert-success" role="alert">
+		  			<h4 class="alert-heading">Guía básica para generar una planilla!</h4>
+		  				<ol>
+		  					<li>
+		  						Elegir año y mes para generar la planilla.
+		  					</li>
+		  					<li>
+		  						Click en el botón "Generar Planilla"
+		  					</li>
+		  					<li>
+		  						El sistema mostrará la información de la planilla generada.
+		  					</li>
+		  					<li>
+		  						Si desea guardar la planilla, debe elegir el botón "Guardar Planilla", que aparece al final de la tabla.
+		  					</li>
+		  				</ol>
 
+		  				<hr>
+	  					<p class="mb-0">Para generar una nueva planilla, pulse el botón "Limpiar" y elija nuevamente el año y mes diferentes</p>  				
+				</div>			
+			</div>
+		@else
 		<!-- Tabla responsiva -->
 		<div class="col-lg-12">
 			<div class="table-responsive">
@@ -28,7 +52,7 @@
 				</div>
 
 				<!-- tabla con totales -->
-				<table class="table table-bordered table-hover table-striped table-condensed">
+				<table class="table table-bordered table-hover table-striped table-condensed" style="background-color: rgba(75, 100, 111,0.10);">
 					<thead style="background-color: rgba(75, 100, 111, 1); color: #FFF;">
 						<tr>
 							<th>No.</th>
@@ -40,31 +64,37 @@
 							<th>Total Sueldo</th>
 							<th>Retención ISR</th>
 							<th>IGSS</th>
-							<th>Salario Líquido</th>
-							<th>Acciones</th>
+							<th>Salario Líquido</th>							
 						</tr>
 					</thead>
 					<tbody>					
 						@foreach($employees_list as $emp)
 							<tr>
 								<td>No</td>
-								<td> {{ $emp->id_employee }} </td>
-								<td> {{ $emp->name ." ".$emp->last_name }} </td>
-								<td> {{ date('d/m/Y', strtotime($emp->start_date)) }} </td>
-								<td>{{ $salarys_list->ordinary_salary }} </td>
-								<td>250</td>
-								<td>{{ $salarys_list->ordinary_salary }} </td>
-								<td>250</td>
-								<td>{{ $igss_list->quota }} </td>
-								<td>3000</td>
-								<td>Editar</td>
+								<td> {{ $emp->id_employee }} </td>								<!-- id empleado -->
+								<td> {{ $emp->name ." ".$emp->last_name }} </td>				<!-- nombre, apellido -->
+								<td> {{ date('d/m/Y', strtotime($emp->start_date)) }} </td>		<!-- fecha inicio -->
+								<td> {{ $salarys_list->ordinary_salary }} </td>					<!-- sueldo base -->
+								<td> {{ $emp->bonus }}</td>										<!-- bono -->
+								<td> {{ $total = ($salarys_list->ordinary_salary + $emp->bonus + $emp->isr) }} </td> <!-- sueldo total -->
+								<td> {{ $emp->isr }}</td>										<!-- retencion isr -->
+								<td> {{ $igss_list->quota }} </td>								<!-- cuota igss -->
+								<td> {{ number_format(($liquid = $total - ($emp->isr + $igss_list->quota)),2) }}</td>
 							</tr>
 						@endforeach
 					</tbody>
 				</table>
-				<hr>				
+				<hr>
+				<div class="from-group">
+					<span>
+						<button type="submit" class="btn btn-primary pull-right" value="validate">
+							<span class="glyphicon glyphicon-save" aria-hidden="true"></span> Guardar Planilla
+						</button>
+					</span>
+				</div>
 				{{ $employees_list->appends(Request::only([ 'year', 'mes' ]))->render() }}
 			</div>
 		</div>
+		@endif
 	</div><!-- /container-fluid -->
 @stop

@@ -30,7 +30,7 @@
 				</div>
 					
 				{{-- Rango de años 2016 al 2018 y aumenta en 1--}}
-				<div class="form-group {{ $errors-> has('periodo') ? 'has-error' : '' }} ">
+				<div class="form-group {{ $errors-> has('periodo') ? 'has-error' : '' }}">
 					<label for="año">Año *:</label>
 					<select name="periodo" id="periodo" class="form-control" required="required">
 						<option value="">--año--</option>

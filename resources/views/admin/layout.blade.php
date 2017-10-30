@@ -328,6 +328,10 @@ desired effect
               <a href="{{route('planillas.index')}}"><i class="fa fa-link"></i> <span>Generar Planilla</span></a>
             </li>
 
+            <li class="{{ Request::is('registro*') ? 'active' : '' }}">        
+              <a href="{{route('detalle.index')}}"><i class="fa fa-link"></i> <span>Consultar Planilla</span></a>
+            </li>
+
             <li><a href="#">Generar Planilla</a></li>
             <li><a href="#">Consultar Planilla</a></li>
           </ul>

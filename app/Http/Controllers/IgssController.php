@@ -23,7 +23,6 @@ class IgssController extends Controller
             ->orderBy('year')
             ->paginate(10);
 
-        
             return view('backend.igss.index', [
                 'igss_quota' => $igss_quota,
             ]);    
@@ -36,6 +35,7 @@ class IgssController extends Controller
      */
     public function create()
     {
+        
         return view('backend.igss.create');
     }
 
@@ -47,9 +47,7 @@ class IgssController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        
-        
+    {                
         /**
          * Reglas de validacion de datos y validación.
          */
@@ -62,16 +60,25 @@ class IgssController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
 
-        // Nueva instancia.
-        $new_igss = new Igss;
+        /**
+         * Validar si existe un registro, para el año elegido.
+         * @var periodo
+         */
+        $result = $this->verifyExistsData($request->periodo);
 
-        $new_igss->year = $request->periodo;
-        $new_igss->quota = $request->cuota;
-        $new_igss->save();
+        if ($result) {
+            Alert::error('Solo puede registrar una cuota IGSS por año. Elija un año diferente.', 'Cuota Existente');
+            return redirect()->back()->withInput();
+        }else{
+            // Agregar nueva cuota.
+            $new_igss = new Igss;
+            $new_igss->year = $request->periodo;
+            $new_igss->quota = $request->cuota;
+            $new_igss->save();
 
-        alert()->success('Success Message', 'Optional Title')->autoclose(1500);
-
-        return redirect()->route('cuotas.index'); //->with('success', 'Nueva cuota Igss agregada.');
+            Alert::success('Ha agregado una nueva Cuota IGSS.', 'Nueva Cuota');
+            return redirect()->route('cuotas.index'); 
+        }
     }
 
     /**
@@ -124,18 +131,34 @@ class IgssController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
 
-        // Consulta modelo.
-        $edit_igss = Igss::findOrFail($id);
+        // Consultar si existe un registro que coincide con el año.
+        $result = $this->verifyExistsData($request->periodo);
+        
+        if ($result)
+        {
+            // Actualizar solo cuota.
+            $edit_igss = Igss::findOrFail($id);
+            //$edit_igss->year = $request->periodo;
+            $edit_igss->quota = $request->cuota;
+            $edit_igss->save();
+        
+            Alert::success('Se ha actualizado solo la Cuota Igss.', 'Cuota IGSS');
+            return redirect()->route('cuotas.index');
+        }else
+            {
+                // Actualizar cuota y año.
+                $edit_igss = Igss::findOrFail($id);
+                $edit_igss->year = $request->periodo;
+                $edit_igss->quota = $request->cuota;
+                $edit_igss->save();
 
-        $edit_igss->year = $request->periodo;
-        $edit_igss->quota = $request->cuota;
-        $edit_igss->save();
-
-        return redirect()->route('cuotas.index')->with('success', 'Cuota Igss actualizada.');
+                Alert::success('Se ha actualizado la Cuota y Año.', 'Cuota IGSS');
+                return redirect()->route('cuotas.index');
+            }
     }
 
     /**
-     * Elimina un registro.
+     * Eliminar un registro.
      *
      * @param  \App\Igss  $igss
      * @return \Illuminate\Http\Response
@@ -146,11 +169,43 @@ class IgssController extends Controller
 
         $igss_delete->status = 0;
         $igss_delete->save();
-
        
-        alert()->success("Good job!", "You clicked the button!", "success");
-
-    
+        Alert::success('Ha eliminado la Cuota IGSS elegida.', 'Eliminar');        
         return redirect()->route('cuotas.index');
     }
+
+    /**
+     * Al momento de crear:
+     * verifyExistsData: verifica si existe un registro de Igss con el mismo año.
+     * Si existe, no dejerá crear otro con el mismo año.
+     *
+     * Sino existe el registro, se procede a crear una nueva cuota.
+     *
+     * Al momento de actualizar.
+     * Si existe un registro, solo actualizará la cuota, manteniendo el año.
+     *
+     * Sino existe el registro, se procede a actualizar el año y la cuota.
+     * 
+     * @param  $year 
+     * @return boolean true|false
+     */
+    private function verifyExistsData($year)
+    {        
+        
+         $resultado='';
+        
+        // Buscar coincidencia.
+        $igss = Igss::where('year', $year)
+                    ->where('status', 1)
+                    ->first();
+        if ($igss)
+        {
+            $resultado = true;
+        }
+        else
+        {
+            $resultado = false;
+        }
+        return $resultado; 
+    } 
 }

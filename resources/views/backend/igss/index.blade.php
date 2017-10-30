@@ -5,7 +5,7 @@
 	<div class="col-lg-12">			
 		<h3>Lista de cuotas Igss</h3>							
 		<div class="col-lg-6">
-			@include('backend.salary._search_salary')				
+			@include('backend.igss._search_igss')				
 		</div>
 
 		<div class="col-lg-6">
@@ -45,7 +45,7 @@
 							      <td>{{ $igss->id_igss }}</td>
 							      <td>{{ $igss->year }}</td>
 							      <td>{{ $igss->quota }}</td>
-							      <td>{{ $igss->created_at }}</td>
+							      <td>{{ date('d/m/Y', strtotime($igss->created_at)) }}</td>
 							      <td>
 							      	<form class="" action="{{route('cuotas.destroy',$igss->id_igss)}}" method="post">
 		                                <input type="hidden" name="_method" value="delete">

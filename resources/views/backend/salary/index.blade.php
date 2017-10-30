@@ -46,7 +46,7 @@
 							      <td>{{ $salary->id_salary }}</td>
 							      <td>{{ $salary->year }}</td>
 							      <td>{{ $salary->ordinary_salary }}</td>
-							      <td>{{ $salary->created_at }}</td>
+							      <td>{{ date('d/m/Y', strtotime($salary->created_at)) }}</td>
 							      	<td>
 								      	<form class="" action="{{route('salarios.destroy',$salary->id_salary)}}" method="post">
 			                                <input type="hidden" name="_method" value="delete">

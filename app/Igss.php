@@ -25,7 +25,9 @@ class Igss extends Model
     {   
         if (trim($cuota) != "") 
         {
-            $query->where('quota', "LIKE", "%$cuota%");
+            //$query->where('quota', "LIKE", "%$cuota%");
+            $query->where('quota', "LIKE", "%$cuota%")
+                  ->orWhere('year', "LIKE", "%$cuota%");
         }
         
     }
