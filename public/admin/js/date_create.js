@@ -3,7 +3,6 @@
  */
 $('#sandbox-container .input-group.date').datepicker({
     format: "dd/mm/yyyy",
-    maxViewMode: 2,
     clearBtn: true,
     language: "es",
     orientation: "bottom auto",

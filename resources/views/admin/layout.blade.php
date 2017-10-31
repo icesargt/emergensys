@@ -28,6 +28,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <link rel="stylesheet" href="{{asset('/admin/css/skin-blue.min.css')}}">
 
+  <!-- estilos apra datepicker -->
+  <link rel="stylesheet" href="{{asset('/admin/datepicker/css/bootstrap-datepicker.min.css')}}">
+
   <!-- Css para validator -->
   <link rel="stylesheet" href="{{asset('/validator/Parsley/css/parsley.css')}}">
 
@@ -547,6 +550,10 @@ desired effect
 <script src="{{asset('/admin/js/bootstrap.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('/admin/js/app.min.js')}}"></script>
+
+<!-- Scripts to datepicker -->
+<script src="{{asset('/admin/datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{asset('/admin/datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
 
 <!-- Validator -->
 <script src="{{asset('/validator/Parsley/js/parsley.min.js')}}"></script>

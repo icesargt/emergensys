@@ -11,12 +11,12 @@ class Record extends Model
 
     // fillable attrib
     protected $fillable = [
-        'employee_id', 'bonus', 'bonus_date', 'isr', 'isr_date'        
+        'employee_id', 'bonus_rec', 'isr_rec', 'created_record'
     ];
 
     // Relation 1..n Employee - PayrollDetail
-    public function employee()
+    public function recordemployee()
     {
-        return $this->belongsTo('Employee');
+        return $this->belongsTo('App\Employee', 'id_employee');
     }
 }

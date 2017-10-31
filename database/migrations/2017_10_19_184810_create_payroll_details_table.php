@@ -24,7 +24,7 @@ class CreatePayrollDetailsTable extends Migration
             $table->decimal('bonus',10,2);
             $table->decimal('total_salary',12,2);
 
-            $table->decimal('isr_tetention',10,2);
+            $table->decimal('isr_retention',10,2);
             $table->decimal('igss',10,2);
             $table->decimal('net_salary',12,2);            
             $table->char('status',1)->default(1); // 1 = exist / 0 = deleted by renglon         

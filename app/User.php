@@ -28,8 +28,8 @@ class User extends Authenticatable
     ];
 
     // User has many payroll
-    public function payroll()
+    public function userpayroll()
     {
-        return $this->hasMany('Payroll');
+        return $this->hasMany('App\Payroll', 'user_id');
     }
 }

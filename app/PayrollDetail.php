@@ -18,33 +18,33 @@ class PayrollDetail extends Model
         'ordinary_salary', 
         'bonus', 
         'total_salary', 
-        'isr_tetention', 
+        'isr_retention', 
         'igss',
         'net_salary', 
         'status',
     ];
 
     // PayrollDetail belongs to Payroll 
-    public function payroll()
+    public function detailpay()
     {
-        return $this->belongsTo('Payroll');
+        return $this->belongsTo('App\Payroll','id_payroll');
     }
 
     // PayrollDetail belongs to Salary
-    public function salary()
+    public function detailsalary()
     {
-        return $this->belongsTo('Salary');
+        return $this->belongsTo('App\Salary', 'id_salary');
     }
 
     // PayrollDetail belongs to Salary
-    public function igss()
+    public function detailigss()
     {
-        return $this->belongsTo('Igss');
+        return $this->belongsTo('App\Igss', 'id_igss');
     } 
 
     // PayrollDetail belongs to Employee
-    public function employee()
+    public function detailemployee()
     {
-        return $this->belongsTo('Employee');
+        return $this->belongsTo('App\Employee', 'id_employee');
     }
 }

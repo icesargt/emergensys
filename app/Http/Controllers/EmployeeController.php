@@ -60,7 +60,7 @@ class EmployeeController extends Controller
                 'apellido' => 'required|max:50',
                 'fecha' => 'required|date_format:d/m/Y',
                 'bonificacion' => 'required|numeric|between:250.00,10000.00',
-                'isr' => 'required|numeric|between:10.00,10000.00',              
+                'isr' => 'required|numeric|between:10.00,10000.00',
         ]);
 
         if ($v->fails()) 
@@ -78,7 +78,8 @@ class EmployeeController extends Controller
         $new_employee->last_name = $request->get('apellido');
         $new_employee->start_date = $insert_date_start;
         $new_employee->bonus = $request->get('bonificacion');
-        $new_employee->isr = $request->get('isr');
+        $new_employee->isr = $request->get('isr'); 
+        $new_employee->created_date = $insert_date_start;
 
         $new_employee->save();
 
@@ -90,22 +91,18 @@ class EmployeeController extends Controller
          * 
          */
         
-        $dt = Carbon::now();
-        $date_save = $dt->toDateString();
+        // $dt = Carbon::now();
+        // $date_save = $dt->toDateString();
 
         $new_record = new Record;        
         $new_record->employee_id = $new_employee->id_employee;
-        $new_record->bonus = $request->get('bonificacion');
-        $new_record->bonus_date = $date_save;
-        $new_record->isr = $request->get('isr');
-        $new_record->isr_date = $date_save;
-
+        $new_record->bonus_rec = $request->get('bonificacion');        
+        $new_record->isr_rec = $request->get('isr');
+        $new_record->created_record = $insert_date_start;
         $new_record->save();
-       
 
-       // $this->setNewRecord($new_employee->id_employee, $new_employee->bonus, $new_employee->isr);
-        
-        return redirect()->route('empleados.index')->with('success','Se ha agregado un nuevo empleado.');
+        Alert::success('Ha agregado un nuevo Empleado.','Empleado Nuevo'); 
+        return redirect()->route('empleados.index');
 
     }
 
@@ -132,8 +129,6 @@ class EmployeeController extends Controller
 
         $records = Record::where('employee_id', $id)
             ->paginate(10);
-
-        //dd($records);
 
         return view('backend.employee.edit', [
             'employee_edit' => $employee_edit,
@@ -194,7 +189,8 @@ class EmployeeController extends Controller
         
         $employee_edit->save();
 
-        return redirect()->route('empleados.index')->with('success','Se han actualizado los datos personales del empleado.');
+        Alert::success('Ha actualizado los datos personales del Empleado.','Actualización');
+        return redirect()->route('empleados.index');
     }
 
     /**
@@ -210,7 +206,8 @@ class EmployeeController extends Controller
         $employee_delete->status = 2; // status = 2 -> deleted
         $employee_delete->save();
 
-        return redirect()->route('empleados.index')->with('success', 'Empleado dado de baja.');        
+        Alert::success('Registro de Empleado eliminado.','Eliminar');
+        return redirect()->route('empleados.index');
     }
 
     /**
@@ -231,12 +228,16 @@ class EmployeeController extends Controller
         $v = Validator::make($request->all(), [            
             'bonificacion' => 'required|numeric|between:250.00,10000.00',
             'isr' => 'required|numeric|between:10.00,10000.00',
+            'fecha_actualizacion' => 'nullable|date_format:d/m/Y',
         ]);
 
         if ($v->fails()) 
         {
             return redirect()->back()->withInput()->withErrors($v->errors());
         }
+
+        $date_update = DateTime::createFromFormat('d/m/Y', $request->fecha_actualizacion);
+        $save_update_date = $date_update->format('Y-m-d');
 
         /**
          * Actualizar datos de empleado, usando modelo Employee.
@@ -245,26 +246,24 @@ class EmployeeController extends Controller
          * @param   $isr, nuevo isr asignado.
          */
 
+        // Guardar cambios en Empleados
         $edit_bonus = Employee::findOrFail($id);        
         $edit_bonus->bonus = $request->get('bonificacion');
-        $edit_bonus->isr = $request->get('isr');
+        $edit_bonus->isr = $request->get('isr'); 
+        $edit_bonus->created_date = $save_update_date;
         $edit_bonus->save();
         
-        // Nueva instancia de Carbon, para transformar
-        // la fecha con la que se guarda los cambios.                 
-        $dt = Carbon::now();
-        $date_save = $dt->toDateString();
-
+        // Guardar cambios en Historial
         $new_record = new Record;        
         $new_record->employee_id = intval($id);
-        $new_record->bonus = $request->get('bonificacion');
-        $new_record->bonus_date = $date_save;
-        $new_record->isr = $request->get('isr');
-        $new_record->isr_date = $date_save;
+        $new_record->bonus_rec = $request->get('bonificacion');        
+        $new_record->isr_rec = $request->get('isr');
+        $new_record->created_record = $save_update_date;
 
         $new_record->save();
 
-        return redirect()->back()->with('success', 'Dados de Bono e ISR actualizado.');
+        Alert::success('Ha actualizado Bono e ISR.', 'Sección Salarios');
+        return redirect()->back();
         // route('empleados.index')->with('success', 'Empleado dado de baja.');  
     }
 
@@ -279,10 +278,8 @@ class EmployeeController extends Controller
 
         $edit_record = Record::findOrFail($id_get_record);
         $edit_record->employee_id = $id_emp;
-        $edit_record->bonus = $new_bonus;
-        $edit_record->bonus_date = $date_save;
-        $edit_record->isr = $new_isr;
-        $edit_record->isr_date = $date_save;
+        $edit_record->bonus_rec = $new_bonus;        
+        $edit_record->isr_rec = $new_isr;        
 
         $edit_record->save();
     }

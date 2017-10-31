@@ -15,12 +15,12 @@ class Salary extends Model
     ];
 
     // relation payroll_details 1 ... n
-    public function payroll_detail()
+    public function salarydetail()
     {
-    	return $this->hasMany('PayrollDetail');
+    	return $this->hasMany('App\PayrollDetail','salary_id');
     }
 
-    // Scope salario, para formulario de busqueda
+    // Scope salario, para formulario de busqueda en index.
     public function scopeSalarios($query, $salario)
     {
         if (trim($salario) != "") {
@@ -28,5 +28,17 @@ class Salary extends Model
                   ->orWhere('year', "LIKE", "%$salario%");
         }
     }
+
+    // Scope salariesPayroll: usar para buscar año de planilla.
+    public function scopeSalariesPayroll($query, $year)
+    {
+        if (trim($year != "")) 
+        {    
+            $query->where('year', $year)                    
+                    ->where('status', 1);
+        }
+    }
+
+
 
 }

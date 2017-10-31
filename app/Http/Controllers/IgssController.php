@@ -64,7 +64,7 @@ class IgssController extends Controller
          * Validar si existe un registro, para el año elegido.
          * @var periodo
          */
-        $result = $this->verifyExistsData($request->periodo);
+        $result = $this->getVerifyExistsData($request->periodo);
 
         if ($result) {
             Alert::error('Solo puede registrar una cuota IGSS por año. Elija un año diferente.', 'Cuota Existente');
@@ -132,7 +132,7 @@ class IgssController extends Controller
         }
 
         // Consultar si existe un registro que coincide con el año.
-        $result = $this->verifyExistsData($request->periodo);
+        $result = $this->getVerifyExistsData($request->periodo);
         
         if ($result)
         {
@@ -176,7 +176,7 @@ class IgssController extends Controller
 
     /**
      * Al momento de crear:
-     * verifyExistsData: verifica si existe un registro de Igss con el mismo año.
+     * getVerifyExistsData: verifica si existe un registro de Igss con el mismo año.
      * Si existe, no dejerá crear otro con el mismo año.
      *
      * Sino existe el registro, se procede a crear una nueva cuota.
@@ -189,23 +189,17 @@ class IgssController extends Controller
      * @param  $year 
      * @return boolean true|false
      */
-    private function verifyExistsData($year)
-    {        
-        
-         $resultado='';
+    private function getVerifyExistsData($year)
+    {                
+         $result_value = false;
         
         // Buscar coincidencia.
         $igss = Igss::where('year', $year)
                     ->where('status', 1)
                     ->first();
-        if ($igss)
-        {
-            $resultado = true;
-        }
-        else
-        {
-            $resultado = false;
-        }
-        return $resultado; 
-    } 
+        if ($igss)        
+            return $result_value = true;    
+        else        
+            return $result_value; 
+    }
 }

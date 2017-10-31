@@ -11,21 +11,21 @@ class Employee extends Model
 
     // fillable attrib
     protected $fillable = [
-        'name', 'last_name', 'start_date', 'status', 'inactivity_date', 'bonus', 'isr',
+        'name', 'last_name', 'start_date', 'status', 'inactivity_date', 'bonus', 'isr', 'created_record',
     ];
 
     // relations models
     
     // Relation 1..n Employee - PayrollDetail
-    public function payroll_detail()
+    public function employeedetail()
     {
-    	return $this->hasMany('PayrollDetail');
+    	return $this->hasMany('App\PayrollDetail', 'employee_id');
     }
 
     // Relation 1..n Employee - Records
-    public function records()
+    public function employeerecord()
     {
-    	return $this->hasMany('Record');
+    	return $this->hasMany('App\Record', 'employee_id');
     }
 
     // Scope Empleados, para buscar empleado

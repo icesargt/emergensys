@@ -91,9 +91,7 @@ class RecordController extends Controller
         //
     }
 
-    public function setUpdateRecord(Request $request)
-    {
-        /**
+    /**
          * Editar un registro Record.
          */
         
@@ -101,7 +99,10 @@ class RecordController extends Controller
         // $id = $request->id;
         // $bono = $request->bono;
         // $isr = $request->isr;
-    
+
+    public function setUpdateRecord(Request $request)
+    {
+        
         if ($request->ajax()) 
         {
             $v = Validator::make($request->all(), [                
@@ -126,10 +127,8 @@ class RecordController extends Controller
             
                 $edit_record = Record::findOrFail($id);
                 $edit_record->employee_id = $empl_id;
-                $edit_record->bonus = $bonus; //$new_bonus;
-                $edit_record->bonus_date = $date_save;
-                $edit_record->isr = $isr; // $new_isr;
-                $edit_record->isr_date = $date_save;
+                $edit_record->bonus = $bonus; //$new_bonus;                
+                $edit_record->isr = $isr; // $new_isr;                
 
                 $edit_record->save();
 
@@ -143,6 +142,5 @@ class RecordController extends Controller
         
         }
     }
-
 
 } // fin de clase

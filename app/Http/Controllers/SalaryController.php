@@ -40,7 +40,7 @@ class SalaryController extends Controller
 
     /**
      * Valida datos y crea un nuevo regisgro de Salario Ordinario.
-     * Campos: year, ordinay_salary
+     * Campos: year, ordinary_salary
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -59,17 +59,24 @@ class SalaryController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
 
-        // Nueva instancia del modelo Salary, para agregaar un nuevo registro, 
-        // con los datos validados.
-        $new_salary = new Salary;
-        $new_salary->year = $request->periodo;
-        $new_salary->ordinary_salary = $request->salario;
+        /**
+         * Validar si existe un salario con el mismo año.
+         */
+        $result = $this->getVerifyExistsDataSalaries($request->periodo);
 
-        $new_salary->save();
+        if ($result) {
+            Alert::error('Ya existe un salario para el año elegido. Solo puede regisrar un Salario Anual.', 'Salario Existente');
+            return redirect()->back()->withInput();
+        }else{
+            // Agregar nuevo salario.
+            $new_salary = new Salary;
+            $new_salary->year = $request->periodo;
+            $new_salary->ordinary_salary = $request->salario;
+            $new_salary->save();
 
-        // Muestra una alerta que se cierra a los 1.5 seg.
-        alert()->success('Ha agregado un nuevo salario satisfactoriamente.', 'Crear Salario')->autoclose(1500);
-        return redirect()->route('salarios.index');
+            Alert::success('Ha agregado un nuevo Salario.','Nuevo Salario');            
+            return redirect()->route('salarios.index');
+        }
     }
 
     /**
@@ -122,18 +129,31 @@ class SalaryController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors());
         }
 
-        // Consulta modelo.
-        $edit_salary = Salary::findOrFail($id);
+        $result = $this->getVerifyExistsDataSalaries($request->periodo);
 
-        $edit_salary->year = $request->periodo;
-        $edit_salary->ordinary_salary = $request->salario;
-        $edit_salary->save();
+        if ($result) {
+            // Actualziar solo el salario.
+            $edit_salary = Salary::findOrFail($id);
+            //$edit_salary->year = $request->periodo;
+            $edit_salary->ordinary_salary = $request->salario;
+            $edit_salary->save();
 
-        return redirect()->route('salarios.index')->with('success', 'Salario Ordinario actualizada.');
+            Alert::success('Se ha actualizado solo el Salario','Salario Anual');
+            return redirect()->route('salarios.index');
+        }else{
+            // Actualizar datos de Salario y año.
+            $edit_salary = Salary::findOrFail($id);
+            $edit_salary->year = $request->periodo;
+            $edit_salary->ordinary_salary = $request->salario;
+            $edit_salary->save();
+
+            Alert::success('Salario Ordinario actualizada.','Actualizar Salario');
+            return redirect()->route('salarios.index');
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar un salario, de forma logica.
      *
      * @param  \App\Salary  $id_salary
      * @return \Illuminate\Http\Response
@@ -145,8 +165,41 @@ class SalaryController extends Controller
         $salary_delete->status = 0;
         $salary_delete->save();
 
-        alert()->success('Salario dado de baja.','Eliminar','success');
-
+        Alert::success('Salario dado de baja.','Eliminar Salario');
         return redirect()->route('salarios.index');
+    }
+
+
+    /**
+     * [getVerifyExistsDataSalaries description]
+     * 
+     * Al momento de crear:
+     * verifyExistsData: verifica si existe un registro de Igss con el mismo año.
+     * Si existe, no dejerá crear otro con el mismo año.
+     *
+     * Sino existe el registro, se procede a crear una nueva cuota.
+     *
+     * Al momento de actualizar.
+     * Si existe un registro, solo actualizará la cuota, manteniendo el año.
+     *
+     * Sino existe el registro, se procede a actualizar el año y la cuota.
+     * 
+     * @param  @year
+     * @return boolean       true|false
+     */
+    
+    private function getVerifyExistsDataSalaries($year)
+    {
+        $result_value = false;
+
+        // Buscar coincidencia
+        $salary = Salary::where('year', $year)
+                        ->where('status', 1)
+                        ->first();
+
+        if ($salary) 
+            return $result_value = true;
+        else
+            return $result_value;
     }
 }

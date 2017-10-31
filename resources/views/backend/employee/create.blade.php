@@ -110,8 +110,6 @@
 	</div> <!-- /container fluid-->
 
 	@push('scripts')
-        <script src="{{asset('/admin/datepicker/js/bootstrap-datepicker.min.js')}}"></script>
-        <script src="{{asset('/admin/datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
         <script src="{{asset('/admin/js/date_create.js')}}"></script>
     @endpush
 @stop

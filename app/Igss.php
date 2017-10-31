@@ -15,9 +15,9 @@ class Igss extends Model
     ];
 
     // relation payroll_details 1 ... n
-    public function payroll_detail()
+    public function igssdetail()
     {
-    	return $this->hasMany('PayrollDetail');
+    	return $this->hasMany('App\PayrollDetail', 'igss_id');
     }
 
     // Query scope para busqueda en Igss controller. Metodo index
@@ -28,8 +28,17 @@ class Igss extends Model
             //$query->where('quota', "LIKE", "%$cuota%");
             $query->where('quota', "LIKE", "%$cuota%")
                   ->orWhere('year', "LIKE", "%$cuota%");
+        }        
+    }
+
+    // Scope salariesPayroll: usar para buscar año de Igss.
+    public function scopeIgssPayroll($query, $year)
+    {
+        if (trim($year != "")) 
+        {    
+            $query->where('year', $year)                    
+                    ->where('status', 1);
         }
-        
     }
     
 }

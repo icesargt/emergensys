@@ -57,5 +57,5 @@ Route::group([ 'middleware' => 'auth', 'prefix' => 'registro' ], function(){
 });
 
 Route::get('error', function(){
-	return view('errors.404')->name('error');
+	return view('errors.404');//->name('error');
 });

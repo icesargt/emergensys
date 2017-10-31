@@ -128,7 +128,7 @@
 
 					<form data-parsley-validate action="{{ route('newrecord', $employee_edit->id_employee) }}" class="form-horizontal" method="POST" autocomplete="off">
 						{{--<input name="_method" type="hidden" value="PATCH">--}}
-						<input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<!-- Sección: Salarios personales. -->
 
 								<!-- Bonififacion -->
@@ -149,6 +149,18 @@
 									</div>
 								</div>
 
+								<div class="form-group {{ $errors->has('fecha_actualizacion') ? 'has-error' : '' }}">
+								<label for="fecha_actualizacion" class="control-label col-sm-4">Fecha de Asignación *:</label>
+									<div class="col-sm-8">
+										<div id="sandbox-container">
+											<div class="input-group date">
+												<input type="text" name="fecha_actualizacion" id="fecha_actualizacion" class="form-control" value="{{date('d/m/Y', strtotime($employee_edit->created_date)) }}"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+											</div>
+										</div>
+									</div>
+									<span class="text-danger">{{ $errors->first('fecha_actualizacion') }}</span>
+								</div>
+
 								<!-- Guardar datos de Bono e ISR-->
 								<div class="from-group">
 									<span>
@@ -161,7 +173,7 @@
 										</button>
 									</span>
 								</div>
-							</form><!-- /form -->
+					</form><!-- /form -->
 
 						<div class="col-lg-12">
 							<hr>
@@ -183,11 +195,11 @@
 											<thead style="background-color: rgba(75, 100, 111, 1); color: #FFF;">
 												<tr>
 													<th>#</th>
-													<th>Bonificación</th>
-													<th>Fecha de alta</th>
+													<th>Bonificación</th>													
 													<th>Retención ISR</th>
 													<th>Fecha de alta</th>
-													<th>Acciones</th>
+													{{-- <th>F. de actualización</th> --}}
+													<th>Actualizar</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -202,18 +214,21 @@
 															<input type="number" class="form-control" min="250.00" max="5000.00" step="0.01" name="bono[]" placeholder="250.00" value="{{ $record->bonus }}" required="">
 
 														</td>
-														<td>
+														{{-- <td>
 															{{ date('d/m/Y', strtotime($record->bonus_date)) }}
-														</td>
+														</td> --}}
 														<td>
 															<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr[]" placeholder="250.00" value="{{ $record->isr }}" required="">
 														</td>
 														<td>
-															{{ date('d/m/Y', strtotime($record->isr_date)) }}
+															{{ date('d/m/Y', strtotime($record->created_record)) }}
 														</td>
+														{{-- <td>
+															{{ date('d/m/Y', strtotime($record->updated_at)) }}
+														</td> --}}
 														<td>
 															<button type="button" class="btn btn-info btn-sm" name="update">
-																<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Actualizar
+																<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
 															</button>
 														</td>
 													</tr>
@@ -226,21 +241,16 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div><!-- /col-lg-12 history -->
+
 					</div><!-- /pane-body-->
 				</div><!-- /panel Bono e ISR -->
 			</div><!-- /center-block -->
 		</div><!-- /col-lg-12 -->
 	</div> <!-- /container fluid-->
 
-	@push('scripts')
-        <script src="{{asset('/admin/datepicker/js/bootstrap-datepicker.min.js')}}"></script>
-        <script src="{{asset('/admin/datepicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
+	@push('scripts')    
         <script src="{{asset('/admin/js/date_edit.js')}}"></script>
-
         <script src="{{asset('/admin/js/history.js')}}"></script>
-
-        history
-
     @endpush
 @stop
