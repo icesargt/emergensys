@@ -1,4 +1,4 @@
 @extends('admin.layout')
 @section('content')
-<h4>Prueba de dashboard</h4>
+<h4>Bienvenidos</h4>
 @stop
