@@ -21,7 +21,7 @@
 	<div class="col-lg-12">
 		<div class="center-block" style="width:50%;">
 				
-			<form data-parsley-validate class="form-horizontal" action="" method="POST" autocomplete="off" novalidate="">
+			<form data-parsley-validate class="form-horizontal" action="{{ route('notifysys') }}" method="POST" autocomplete="off" novalidate="">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 				<input type="hidden" class="form-control" id="id_patient" name="id_patient" readonly="readonly" 
