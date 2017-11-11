@@ -15,7 +15,7 @@ class SendAlert extends Model
     ];
 
    // Relationship. n...1 SendAlert...Patient
-   public function atientAlert()
+   public function getPatientAlert()
    {
    		return $this->belongsTo('App\Patient', 'id_patient');
    }
