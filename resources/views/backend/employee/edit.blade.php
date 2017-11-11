@@ -211,14 +211,14 @@
 															{{ $record->id_record }}
 														</td>
 														<td>
-															<input type="number" class="form-control" min="250.00" max="5000.00" step="0.01" name="bono[]" placeholder="250.00" value="{{ $record->bonus }}" required="">
+															<input type="number" class="form-control" min="250.00" max="5000.00" step="0.01" name="bono[]" placeholder="250.00" value="{{ $record->bonus_rec }}" required="">
 
 														</td>
 														{{-- <td>
 															{{ date('d/m/Y', strtotime($record->bonus_date)) }}
 														</td> --}}
 														<td>
-															<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr[]" placeholder="250.00" value="{{ $record->isr }}" required="">
+															<input type="number" class="form-control" min="10.00" max="10000.00" step="0.01" name="isr[]" placeholder="250.00" value="{{ $record->isr_rec }}" required="">
 														</td>
 														<td>
 															{{ date('d/m/Y', strtotime($record->created_record)) }}

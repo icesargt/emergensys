@@ -5,10 +5,11 @@
 /vendor
 /.idea
 /.vagrant
+/z_otros
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-.env
+
 back_env_heroku
 

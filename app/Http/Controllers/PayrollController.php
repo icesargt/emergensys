@@ -12,6 +12,7 @@ use App\Salary;
 use App\User;
 use Validator;
 use Alert;
+use DB;
 
 class PayrollController extends Controller
 {
@@ -47,7 +48,7 @@ class PayrollController extends Controller
                 ]);            
         }
 
-        // Si las variables contienen datos.
+        // Si contienen datos.
         if ( ($request->get('year') != null) && ($request->get('mes') != null) ) 
         {
             
@@ -57,123 +58,60 @@ class PayrollController extends Controller
             $search_month = intval($request->get('mes'));
 
 
-            $list_ids = Employee::select('id_employee')
-            					->where('status', 1)            					
-            					->get();
+            // Validar si existe una cuota para el año, elegido.
+            $yearIgss = $this->getIgss($search_year);
 
-           	
-
-
-
-
-
-         //    $employee = Employee::with('employeerecord')
-    					// ->whereYear('created_date', $search_year)
-    					// ->whereMonth('created_date', $search_month)
-    					// ->where('employee_id', $list_ids) whereIn('employee_id', $list_ids)
-    					// ->get();
-    		
-    		$emp = Employee::where('status', 1)
-    						->with(['employeerecord' => function($query) use ($search_year, $search_month){
-    							$query->whereYear('created_record', '>=', $search_year)
-    								->whereMonth('created_record', '>=', $search_month)
-    								->orderBy('created_record', 'desc')
-    								->first();
-    							}])
-    						->get();
-
-    		dd($emp);
-
-
-
-
-
-    		$employee = Employee::with('employeerecord')
-    					->whereYear('created_date', $search_year)
-    					->whereMonth('created_date', $search_month)
-    					->where('employee_id', $list_ids)
-    					->get();
-
-
-    		dd($employee);
-
-
-
-            $data_employee = Employee::with('recordsemp')->get();//with('records'); //->where('status','<>',2);
-            foreach ($data_employee as $key => $value) {
-                dd(
-                    $value->name,
-                    $value->bonus
-
-
-                    );
+            if (!$yearIgss) {
+                Alert::error('No existe cuota Igss del año elegido. Por favor, agrege una nueva cuota.', 'Cuota Igss');
+                //$paystatus = false;
+                return redirect()->back()->withInput();               
             }
 
-            // Verificar si existe planilla. Si existe, mostrar la planilla y detalles de la misma.
-            $verifyPayroll = $this->getExistsPayroll($search_year, $search_month);
+            // Validar si existe un salario ordinario para el año, elegido.
+            $yearSalary = $this->getSalary($search_year);
 
-            if ($verifyPayroll) {
-                $data_payrolls = Payroll::PayrollExists($search_year, $search_month)->first();
-                $data_salries = Salary::salariesPayroll($search_year)->first();
-                $data_igss = Igss::gssPayroll($search_year)->first();
-                $data_employee = Employee::with('records')->where('status','<>',2);
-
-
-                $data_details = PayrollDetail::where('payroll_id', $data_payrolls->id_payroll)
-                                             ->where('employee_id',l);
-
+            if (!$yearSalary) {
+                Alert::error('No existe Salario Ordinario asignado al año elegido. Por favor, agrege una Salario Ordinario.', 'Salario Ordinario');
+                return redirect()->back()->withInput();
             }
-            //dd($verifyPayroll);
+
+            // Validar si ya se genero una planilla, en el año y mes elegidos.
+            $payroll_details = $this->getPayrollExists($search_year, $search_month);
+
+            if ($payroll_details) {
+                 Alert::info('Ya se ha creado una planilla para el año y mes elegidos. Se mostrarán los datos.', 'Planilla Existente');
+                //return redirect()->back()->withInput();
+            }else{
+                echo "generar nueva planilla para guardar.";
+            }
+
+            
+
+            
+
+            
+
             
 
 
-            //$existPayroll = Payroll::planillaExistente($search_year, $search_month)->first();
+            // $list_ids = DB::table('employees')
+            //             ->select('id_employee')
+            //             ->get();
+            
+            
 
-            //dd($existPayroll);
-
-        
-        
-            /**
-             * Verificar si existe un registro de planilla para el mes y año buscado.
-             */
-            $exist_payroll = Payroll::where('year', $search_year)
-                                        ->where('month', $search_month)
-                                        ->paginate(50);
-
-            //dd($exist_payroll);
-
-            // if ($exist_payroll->total() > 0) {
-            //     return $exist_payroll;
-            // }
-
-            /**
-             * Cargar datos de empleados, con estatus activo hasta el mes solicitado.
-             */
-            $employees_list = Employee::where('status','<>',2)
-                                        ->paginate(50);
+            $employees_list = Employee::paginate(50);
 
             
-            /**
-             * Cargar cuota de Igss actual.
-             */
-            $igss_list = Igss::where('year',$search_year)
-                            ->where('status',1)
-                            ->first();
 
-                    //dd($igss_list);
-            /**
-             * Cargar salario anual al año solicitado.
-             */
-            $salarys_list = Salary::where('year', $search_year)
-                                ->where('status',1)
-                                ->first();
+            
 
             return view('backend.payroll.index', [
                     'months' => $months,
-                    'exist_payroll' => $exist_payroll,
+                    // 'exist_payroll' => $exist_payroll,
                     'employees_list' => $employees_list,
-                    'igss_list' => $igss_list,
-                    'salarys_list' => $salarys_list,
+                    'yearIgss' => $yearIgss,
+                    'yearSalary' => $yearSalary,
                     'paystatus' => $paystatus
                 ]);
         }
@@ -261,28 +199,85 @@ class PayrollController extends Controller
      * @param   $month 
      * @return boolean  true|false
      */
-    private function getExistsPayroll($year, $month)
-    {
-        $result_value = false;
+    // private function getExistsPayroll($year, $month)
+    // {
+    //     $result_value = false;
 
-        $payroll_verify = Payroll::whereYear('year', $year)
-                                ->whereMonth('month', $month)
+    //     $payroll_verify = Payroll::whereYear('year', $year)
+    //                             ->whereMonth('month', $month)
+    //                             ->where('status', 1)
+    //                             ->first();
+    //     if ($payroll_verify)
+    //         return $result_value = true;
+    //     else
+    //         return $result_value;
+    // }
+
+    // // Buscar empleados con mes y año igual al buscado.
+    // private function searchRecordsEquals($year, $month, $id)
+    // {
+    // 	$employee = Employee::with('employeerecord')
+    // 					->whereYear('created_date', $year)
+    // 					->whereMonth('created_date', $month)
+    // 					->where('employee_id', $id)
+    // 					->get();
+
+    // }
+    
+    /**
+     * getIgss Validar si existe una cuota para el año elegido.
+     * @param   $year 
+     * @return  $igss_search | objeto
+     */
+    
+    private function getIgss($year)
+    {        
+        $igss_search = Igss::select('id_igss', 'quota')
+                    ->where('status', 1)
+                    ->where('year', $year)
+                    ->first();
+    
+        if ($igss_search) {
+            return $igss_search;
+        }else{
+            return $igss_search = false;
+        }
+    }
+
+    /**
+     * getSalary Validar si existe salario ordinario asigando para el año elegido.
+     * @param   $year 
+     * @return  $salary_search | objeto
+     */
+    
+    private function getSalary($year)
+    {        
+        $salary_search = Salary::select('id_salary', 'ordinary_salary')
+                    ->where('status', 1)
+                    ->where('year', $year)
+                    ->first();
+    
+        if ($salary_search) {
+            return $salary_search;
+        }else{
+            return $salary_search = false;
+        }
+    }
+
+    // Validar si existe una planilla previamente.
+    private function getPayrollExists($year, $month)
+    {
+        $payroll_data = Payroll::select('id_payroll', 'year', 'month', 'generated_date')
                                 ->where('status', 1)
+                                ->where('year', $year)
+                                ->where('month', $month)
                                 ->first();
-        if ($payroll_verify)
-            return $result_value = true;
-        else
-            return $result_value;
-    }
 
-    // Buscar empleados con mes y año igual al buscado.
-    private function searchRecordsEquals($year, $month, $id)
-    {
-    	$employee = Employee::with('employeerecord')
-    					->whereYear('created_date', $year)
-    					->whereMonth('created_date', $month)
-    					->where('employee_id', $id)
-    					->get();
+        if ($payroll_data) {
+            return $payroll_data;
+        }else{
+            return $payroll_data = false;
+        }
 
     }
-}
+}   

@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Sistema de Pagos | www.paymentclick.dev</title>
+  <title>Emergency System | www.emergensys.dev</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -73,9 +73,9 @@ desired effect
     <!-- Logo -->
     <a href="/dashboard" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>P</b>SA</span>
+      <span class="logo-mini"><b>N</b>SYS</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>PLANILLA</b>SA</span>
+      <span class="logo-lg"><b>NOTIFY</b>SYS</span>
     </a>
 
     <!-- Header Navbar -->
@@ -88,106 +88,7 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-          {{--
-
-          <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the messages -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <!-- User Image -->
-                        <img src="{{ asset('/admin/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
-                      </div>
-                      <!-- Message title and timestamp -->
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <!-- The message -->
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                </ul>
-                <!-- /.menu -->
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
-          <!-- /.messages-menu -->
-
-
-          <!-- Notifications Menu -->
-          <li class="dropdown notifications-menu">
-            <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
-              <li>
-                <!-- Inner Menu: contains the notifications -->
-                <ul class="menu">
-                  <li><!-- start notification -->
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
-                  <!-- end notification -->
-                </ul>
-              </li>
-              <li class="footer"><a href="#">View all</a></li>
-            </ul>
-          </li>
-          <!-- Tasks Menu -->
-          <li class="dropdown tasks-menu">
-            <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 9 tasks</li>
-              <li>
-                <!-- Inner menu: contains the tasks -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <!-- Task title and progress text -->
-                      <h3>
-                        Design some buttons
-                        <small class="pull-right">20%</small>
-                      </h3>
-                      <!-- The progress bar -->
-                      <div class="progress xs">
-                        <!-- Change the css width attribute to simulate progress -->
-                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">20% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="#">View all tasks</a>
-              </li>
-            </ul>
-          </li>
-
-          --}}
+          
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
@@ -281,92 +182,82 @@ desired effect
         <li class="header"><h5>MENÚ PRINCIPAL</h5></li>
         <!-- Optionally, you can add icons to the links -->
     
-        <!-- Igss link-->
-        <li class="{{ Request::is('igss*') ? 'active' : '' }}">        
-          <a href="{{route('cuotas.index')}}"><i class="fa fa-link"></i> <span>Cuotas IGSS</span></a>
+        <!-- Type of Jobs link-->
+        <li class="{{ Request::is('multi*') ? 'active' : '' }}">        
+          <a href="{{route('categories.index')}}"><i class="fa fa-address-book" aria-hidden="true"></i><span>Tipo de Puestos</span></a>
         </li>
 
-        <!-- Salarios link-->
-        <li class="{{ Request::is('pago*') ? 'active' : '' }}">
-          <a href="{{route('salarios.index')}}"><i class="fa fa-link"></i> <span>Salario Anual</span></a>
+        <!-- Jobs link-->
+        <li class="{{ Request::is('works*') ? 'active' : '' }}">        
+          <a href="{{route('positions.index')}}"><i class="fa fa-user-o" aria-hidden="true"></i><span>Puestos</span></a>
         </li>
 
-        <!-- Menu multilevel de Empleados  -->
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Gestión de Empleados</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-
-          <ul class="treeview-menu">
-
-          <!-- Empleados link-->
-            <li class="{{ Request::is('info*') ? 'active' : '' }}">        
-              <a href="{{route('empleados.index')}}"><i class="fa fa-link"></i> <span>Empleados</span></a>
-            </li>
-
-            <!-- Historial link-->
-            <li class="{{ Request::is('dato*') ? 'active' : '' }}">
-              <a href="{{route('historial.index')}}"><i class="fa fa-link"></i> <span>Historial</span></a>
-            </li>
-
-            {{-- <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li> --}}
-          </ul>
+        <!-- Medical Specialitys link-->
+        <li class="{{ Request::is('medical_specialities*') ? 'active' : '' }}">        
+          <a href="{{route('speciality.index')}}"><i class="fa fa-hospital-o" aria-hidden="true"></i><span>Especialidades Medicas</span></a>
         </li>
-        <!-- fin multilevel -->
 
-
-        <!-- Menu multilevel de Planillas-->
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Planillas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-
-          <ul class="treeview-menu">
-            <li class="{{ Request::is('control*') ? 'active' : '' }}">        
-              <a href="{{route('planillas.index')}}"><i class="fa fa-link"></i> <span>Generar Planilla</span></a>
-            </li>
-
-            <li class="{{ Request::is('registro*') ? 'active' : '' }}">        
-              <a href="{{route('detalle.index')}}"><i class="fa fa-link"></i> <span>Consultar Planilla</span></a>
-            </li>
-
-            <li><a href="#">Generar Planilla</a></li>
-            <li><a href="#">Consultar Planilla</a></li>
-          </ul>
+        <!-- Level Status link-->
+        <li class="{{ Request::is('list_warn*') ? 'active' : '' }}">        
+          <a href="{{route('level_danger.index')}}"><i class="fa fa-heartbeat" aria-hidden="true"></i><span>Estados de Salud</span></a>
         </li>
-        <!-- fin multilevel -->
 
-                
+        <!-- Diseases Status link-->
+        <li class="{{ Request::is('pathologic*') ? 'active' : '' }}">        
+          <a href="{{route('pathologic_lists.index')}}"><i class="fa fa-stethoscope" aria-hidden="true"></i><span>Diagnósticos</span></a>
+        </li>
+
+        <!-- Prescriptions Status link-->
+        <li class="{{ Request::is('recet*') ? 'active' : '' }}">        
+          <a href="{{route('medical_prescription.index')}}"><i class="fa fa-user-md" aria-hidden="true"></i><span>Preescripciones</span></a>
+        </li>
+
+        <!-- Pacientes link-->
+        <li class="{{ Request::is('persons*') ? 'active' : '' }}">        
+          <a href="{{route('patient_lists.index')}}"><i class="fa fa-venus-mars" aria-hidden="true"></i><span>Pacientes</span></a>
+        </li>
+
+                        
         <!-- Menu multilevel de Reportes -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Reportes</span>
+          <a href="#"><i class="fa fa-tasks" aria-hidden="true"></i><span>Admnistrar Mensajes</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
 
           <ul class="treeview-menu">
-            <li><a href="#">Registro de Igss</a></li>
-            <li><a href="#">Registro de Salarios</a></li>
 
-            <li><a href="#">Registro de Empleados</a></li>
-            <li><a href="#">Historial de Empleados</a></li>
+          <li class="{{ Request::is('media*') ? 'active' : '' }}">        
+              <a href="{{route('list_emergency')}}"><i class="fa fa-bell-o" aria-hidden="true"></i><span>Notificar Emergencia</span></a>
+            </li>
 
-            <li><a href="#">Planillas Generadas</a></li>
-            <li><a href="#">P</a></li>
-            
-
+            <li class="{{ Request::is('media*') ? 'active' : '' }}">        
+              <a href="{{route('sending_alerts.index')}}"><i class="fa fa-history" aria-hidden="true"></i><span>Historial</span></a>
+            </li>            
           </ul>
         </li>
+        <!-- fin multilevel -->
+
+        <!-- Menu multilevel de Reportes -->
+        {{-- 
+        <li class="treeview">
+          <a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true"></i><span>Reportes</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-paper-plane" aria-hidden="true"></i>Notificaciones Enviadas</a></li>
+            <li><a href="#"><i class="fa fa-list-ol" aria-hidden="true"></i>Pacientes</a></li>
+              
+          </ul>
+        </li> --}}
         <!-- fin multilevel -->
 
         <!-- Link de form de contacto -->
-        <li><a href="#"><i class="fa fa-link"></i> <span>Contacto</span></a></li>
+        <li><a href="#"><i class="fa fa-envelope-square" aria-hidden="true"></i><span>Contacto</span></a></li>
 
       </ul>
       <!-- /.sidebar-menu -->
@@ -398,7 +289,7 @@ desired effect
       <div class="col-lg-12">
         <div class="box">
           <div class="box-header with-border">
-            <h1 class="box-title">Sistema de Planillas</h1>
+            <h1 class="box-title">Sistema de Notificaciones</h1>
             <div class="box-tools pull-right">
               <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
               {{-- <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> --}}

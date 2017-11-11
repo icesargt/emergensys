@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -186,6 +186,9 @@ return [
         // Sweet alert
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
 
+        // Facade Nexmo
+        Nexmo\Laravel\NexmoServiceProvider::class,
+
     ],
 
     /*
@@ -244,6 +247,9 @@ return [
 
         // Sweet alert alias
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
+
+        // Aliases Nexmo
+        'Nexmo' => Nexmo\Laravel\Facade\Nexmo::class,
 
     ],
 

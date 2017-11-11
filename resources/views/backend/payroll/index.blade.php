@@ -71,15 +71,7 @@
 						@foreach($employees_list as $emp)
 							<tr>
 								<td>No</td>
-								<td> {{ $emp->id_employee }} </td>								<!-- id empleado -->
-								<td> {{ $emp->name ." ".$emp->last_name }} </td>				<!-- nombre, apellido -->
-								<td> {{ date('d/m/Y', strtotime($emp->start_date)) }} </td>		<!-- fecha inicio -->
-								<td> {{ $salarys_list->ordinary_salary }} </td>					<!-- sueldo base -->
-								<td> {{ $emp->bonus }}</td>										<!-- bono -->
-								<td> {{ $total = ($salarys_list->ordinary_salary + $emp->bonus + $emp->isr) }} </td> <!-- sueldo total -->
-								<td> {{ $emp->isr }}</td>										<!-- retencion isr -->
-								<td> {{ $igss_list->quota }} </td>								<!-- cuota igss -->
-								<td> {{ number_format(($liquid = $total - ($emp->isr + $igss_list->quota)),2) }}</td>
+								
 							</tr>
 						@endforeach
 					</tbody>

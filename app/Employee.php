@@ -31,8 +31,7 @@ class Employee extends Model
     // Scope Empleados, para buscar empleado
     public function scopeEmpleados($query, $nombre)
     {
-        if (trim($nombre) != "") {
-            // $query->where('name','LIKE',"%$nombre%");
+        if (trim($nombre) != "") {           
             $query->where(\DB::raw("CONCAT(name, ' ', last_name)"), "LIKE", "%$nombre%");
         }
     }

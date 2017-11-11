@@ -27,9 +27,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    // User has many payroll
-    public function userpayroll()
+    // // User has many payroll
+    // public function userpayroll()
+    // {
+    //     return $this->hasMany('App\Payroll', 'user_id');
+    // }
+    // 
+    // Relationship. User has send Alert. 1...n
+    public function getAlertUser()
     {
-        return $this->hasMany('App\Payroll', 'user_id');
+        return $this->hasMany('App\SendAlert', 'user_id');
     }
 }
